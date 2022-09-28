@@ -2,7 +2,7 @@
 
 <html lang="en">
     <head>
-        <title> ONote: { % block title % }{% endblock %}</title>
+        <title> ONote: {% block title %}{% endblock %}</title>
     </head>
     <body>
         {% if session["user_id"] %}
