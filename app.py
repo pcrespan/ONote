@@ -80,3 +80,12 @@ def login():
             return render_template("/login", error = error)
     else:
         return render_template("/login")
+
+
+@app.route("/logout", methods = "POST")
+@require_login
+def logout():
+    if request.method == "POST":
+        if session["user_id"]:
+            session.clear()
+            return redirect("/login")
