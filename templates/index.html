@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <p><a href="/edit">+</a></p>
+    {% if user_notes %}
+        {% for notes in user_notes %}
+        <ul>
+            <li>notes[0]</li>
+            <li>notes[1]</li>
+            <li>notes[2]</li>
+        </ul>
+        {% endfor %}
+    {% else %}
+        <p>No notes yet</p>
+    {% endif %}
+{% endblock %}
