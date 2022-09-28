@@ -25,8 +25,14 @@ def connection():
 
 # Close connection with database
 def closeCon(connection, cursor):
-    connection.close()
     cursor.close()
+    connection.close()
+
+
+def conCommit(connection, cursor):
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 
 # Checks if user is logged in
@@ -49,16 +55,16 @@ def register():
         password = request.form.get("password")
         confirmPass = request.form.get("confirmPass")
         
-        cursor.execute("SELECT id FROM users WHERE username = %s", (username, ))
+        cursor.execute("SELECT * FROM users WHERE username = %s;", (username, ))
         user_exists = cursor.fetchall()
         error = 'Username already in use'
-        if user_exists[0][0] or password != confirmPass:
+        if user_exists or password != confirmPass:
             closeCon(con, cursor)
             return render_template("register.html", error = error)
         else:
-            hashPassword = generate_password_hash(password, "sha256")
-            cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashPassword))
-            closeCon(con, cursor)
+            hashPassword = generate_password_hash(password)
+            cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (username, hashPassword))
+            conCommit(con, cursor)
             return redirect("/login")
     else:
         return render_template("register.html")
@@ -79,7 +85,7 @@ def login():
         else:
             redirect("/login")
 
-        cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
+        cursor.execute("SELECT * FROM users WHERE username = %s;", (username, ))
         user_data = cursor.fetchall()
         if user_data and check_password_hash(user_data[0][2], password):
             session["user_id"] = user_data[0][0]
@@ -107,6 +113,6 @@ def index():
     con = connection()
     cursor = con.cursor()
 
-    user_notes = cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s", (session["user_id"], )).fetchall()
+    user_notes = cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s;", (session["user_id"], )).fetchall()
     closeCon(con, cursor)
     return render_template("index.html", user_notes = user_notes)
