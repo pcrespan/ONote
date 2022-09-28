@@ -22,6 +22,7 @@ def connection():
     )
     return conn
 
+# Close connection with database
 def closeCon(connection, cursor):
     connection.close()
     cursor.close()
@@ -74,9 +75,11 @@ def login():
 
         if user_data and check_password_hash(user_data[0][2], password):
             session["user_id"] = user_data[0][0]
+            closeCon(con, cursor)
             return render_template("/index")
         else:
             error = 'Wrong username or password'
+            closeCon(con, cursor)
             return render_template("/login", error = error)
     else:
         return render_template("/login")
@@ -89,3 +92,14 @@ def logout():
         if session["user_id"]:
             session.clear()
             return redirect("/login")
+
+
+@app.route("/")
+@require_login
+def index():
+    con = connection()
+    cursor = con.cursor()
+
+    user_notes = cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s", (session["user_id"], )).fetchall()
+    closeCon(con, cursor)
+    return render_template("/index", user_notes = user_notes)
