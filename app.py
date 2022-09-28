@@ -22,6 +22,10 @@ def connection():
     )
     return conn
 
+def closeCon(connection, cursor):
+    connection.close()
+    cursor.close()
+
 
 # Checks if user is logged in
 def require_login(f):
@@ -36,21 +40,22 @@ def require_login(f):
 
 @app.route("/register", methods = ["GET", "POST"])
 def register():
-
-    con = connection()
-    cursor = con.cursor()
-
     if request.method == "POST":
+        con = connection()
+        cursor = con.cursor()
+
         username = request.form.get("username")
         password = request.form.get("password")
         
         user_exists = cursor.execute("SELECT id FROM users WHERE username = %s", (username, )).fetchall()
         error = 'Username already in use'
         if user_exists:
+            closeCon(con, cursor)
             return render_template("/register", error = error)
         else:
             hashPassword = generate_password_hash(password, "sha256")
             cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashPassword))
+            closeCon(con, cursor)
     else:
         return render_template("/register")
 
@@ -59,4 +64,19 @@ def register():
 def login():
     if request.method == "POST":
         # Check if username and password match database
-        pass
+        con = connection()
+        cursor = con.cursor()
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        user_data = cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
+
+        if user_data and check_password_hash(user_data[0][2], password):
+            session["user_id"] = user_data[0][0]
+            return render_template("/index")
+        else:
+            error = 'Wrong username or password'
+            return render_template("/login", error = error)
+    else:
+        return render_template("/login")
