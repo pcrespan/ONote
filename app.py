@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # Configuring Flask
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -18,7 +19,7 @@ def connection():
         host = 'localhost',
         database = 'onote',
         user = 'postgres',
-        password = 'postgres'
+        password = 'onote'
     )
     return conn
 
@@ -30,12 +31,11 @@ def closeCon(connection, cursor):
 
 # Checks if user is logged in
 def require_login(f):
-    @wraps
+    @wraps(f)
     def logged(*args, **kwargs):
-        if session["user_id"]:
+        if session.get("user_id"):
             return f(*args, **kwargs)
-        else:
-            return redirect("/login")
+        return redirect("/login")
     return logged
 
 
@@ -47,18 +47,21 @@ def register():
 
         username = request.form.get("username")
         password = request.form.get("password")
+        confirmPass = request.form.get("confirmPass")
         
-        user_exists = cursor.execute("SELECT id FROM users WHERE username = %s", (username, )).fetchall()
+        cursor.execute("SELECT id FROM users WHERE username = %s", (username, ))
+        user_exists = cursor.fetchall()
         error = 'Username already in use'
-        if user_exists:
+        if user_exists[0][0] or password != confirmPass:
             closeCon(con, cursor)
-            return render_template("/register", error = error)
+            return render_template("register.html", error = error)
         else:
             hashPassword = generate_password_hash(password, "sha256")
             cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashPassword))
             closeCon(con, cursor)
+            return redirect("/login")
     else:
-        return render_template("/register")
+        return render_template("register.html")
 
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -76,8 +79,8 @@ def login():
         else:
             redirect("/login")
 
-        user_data = cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
-
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
+        user_data = cursor.fetchall()
         if user_data and check_password_hash(user_data[0][2], password):
             session["user_id"] = user_data[0][0]
             session["username"] = user_data[0][1]
@@ -86,18 +89,16 @@ def login():
         else:
             error = 'Wrong username or password'
             closeCon(con, cursor)
-            return render_template("/login", error = error)
+            return render_template("login.html", error = error)
     else:
-        return render_template("/login")
+        return render_template("login.html")
 
 
-@app.route("/logout", methods = "POST")
+@app.route("/logout")
 @require_login
 def logout():
-    if request.method == "POST":
-        if session["user_id"]:
-            session.clear()
-            return redirect("/login")
+    session.clear()
+    return redirect("/login")
 
 
 @app.route("/")
@@ -108,4 +109,4 @@ def index():
 
     user_notes = cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s", (session["user_id"], )).fetchall()
     closeCon(con, cursor)
-    return render_template("/index", user_notes = user_notes)
+    return render_template("index.html", user_notes = user_notes)
