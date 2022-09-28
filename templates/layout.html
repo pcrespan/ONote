@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title> ONote: { % block title % }{% endblock %}</title>
+    </head>
+    <body>
+        {% if session["user_id"] %}
+            <ul>
+                <li class="item"><a href="/">Home</a></li>
+                <li class="item"><a href="/logout">Log out</a></li>
+                <li class="hello">Hello, {{ session["username"] }}</li>
+            </ul>
+        {% else %}
+            <ul>
+                <li class="item"><a href="/login">Log In</a></li>
+                <li class="item"><a href="/register">Register</a></li>
+            </ul>
+        {% endif %}
+    </body>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+</html>
