@@ -71,10 +71,16 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
+        if username and password:
+            pass
+        else:
+            redirect("/login")
+
         user_data = cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
 
         if user_data and check_password_hash(user_data[0][2], password):
             session["user_id"] = user_data[0][0]
+            session["username"] = user_data[0][1]
             closeCon(con, cursor)
             return render_template("/index")
         else:
