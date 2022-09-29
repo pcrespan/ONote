@@ -30,7 +30,7 @@ def close_con(connection, cursor):
     connection.close()
 
 
-def conCommit(connection, cursor):
+def con_commit(connection, cursor):
     connection.commit()
     cursor.close()
     connection.close()
@@ -65,7 +65,7 @@ def register():
         else:
             hashPassword = generate_password_hash(password)
             cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (username, hashPassword))
-            conCommit(con, cursor)
+            con_commit(con, cursor)
             return redirect("/login")
     else:
         return render_template("register.html")
@@ -141,7 +141,7 @@ def add():
         cursor = con.cursor()
 
         cursor.execute("INSERT INTO notes (uid, title, text, date, hour) VALUES (%s, %s, %s, %s, %s);", (session["user_id"], title, text, date, hour))
-        conCommit(con, cursor)
+        con_commit(con, cursor)
         return redirect("/")
     else:
         return render_template("add.html")
@@ -157,7 +157,7 @@ def delete():
         cursor = con.cursor()
 
         cursor.execute("DELETE FROM notes WHERE noteid = %s", (note_id))
-        close_con(con, cursor)
+        con_commit(con, cursor)
         # Might be cool to add a warning that the note was successfully deleted
         return redirect("/")
     else:
