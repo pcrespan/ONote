@@ -1,4 +1,5 @@
 import psycopg2
+from datetime import datetime
 
 from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
@@ -91,7 +92,7 @@ def login():
             session["user_id"] = user_data[0][0]
             session["username"] = user_data[0][1]
             closeCon(con, cursor)
-            return render_template("/index")
+            return redirect("/")
         else:
             error = 'Wrong username or password'
             closeCon(con, cursor)
@@ -113,6 +114,36 @@ def index():
     con = connection()
     cursor = con.cursor()
 
-    user_notes = cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s;", (session["user_id"], )).fetchall()
+    cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
+    user_notes = cursor.fetchall()
     closeCon(con, cursor)
     return render_template("index.html", user_notes = user_notes)
+
+
+@app.route("/add", methods = ["GET", "POST"])
+@require_login
+def add():
+
+    title = request.form.get("title")
+    text = request.form.get("text")
+    today = datetime.now()
+    date = today.date()
+    hour = today.time()
+    print(date)
+    print(hour)
+
+    if request.method == "POST":
+        if title and text:
+            pass
+        else:
+            error = 'Fill every field before adding a note'
+            return render_template("add.html", error = error)
+        
+        con = connection()
+        cursor = con.cursor()
+
+        cursor.execute("INSERT INTO notes (uid, title, text, date, hour) VALUES (%s, %s, %s, %s, %s);", (session["user_id"], title, text, date, hour))
+        conCommit(con, cursor)
+        return redirect("/")
+    else:
+        return render_template("add.html")
