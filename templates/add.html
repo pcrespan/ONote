@@ -8,7 +8,7 @@
     <p>{{ error }}</p>
     <form action="/add", method="post">
         <input required name="title" placeholder="Title">
-        <input required name="text" placeholder="Text">
+        <textarea required name="text" placeholder="Text" rows="15" cols="20"></textarea>
         <button type="submit">Add</button>
     </form>
 {% endblock %}
