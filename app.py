@@ -25,7 +25,7 @@ def connection():
     return conn
 
 # Close connection with database
-def closeCon(connection, cursor):
+def close_con(connection, cursor):
     cursor.close()
     connection.close()
 
@@ -60,7 +60,7 @@ def register():
         user_exists = cursor.fetchall()
         error = 'Username already in use'
         if user_exists or password != confirmPass:
-            closeCon(con, cursor)
+            close_con(con, cursor)
             return render_template("register.html", error = error)
         else:
             hashPassword = generate_password_hash(password)
@@ -91,11 +91,11 @@ def login():
         if user_data and check_password_hash(user_data[0][2], password):
             session["user_id"] = user_data[0][0]
             session["username"] = user_data[0][1]
-            closeCon(con, cursor)
+            close_con(con, cursor)
             return redirect("/")
         else:
             error = 'Wrong username or password'
-            closeCon(con, cursor)
+            close_con(con, cursor)
             return render_template("login.html", error = error)
     else:
         return render_template("login.html")
@@ -114,9 +114,9 @@ def index():
     con = connection()
     cursor = con.cursor()
 
-    cursor.execute("SELECT title, text, date, hour FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
+    cursor.execute("SELECT noteid, title, text, TO_CHAR(date, 'MM/DD/YYYY'), TO_CHAR(hour, 'HH:MM') FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
     user_notes = cursor.fetchall()
-    closeCon(con, cursor)
+    close_con(con, cursor)
     return render_template("index.html", user_notes = user_notes)
 
 
@@ -129,8 +129,6 @@ def add():
     today = datetime.now()
     date = today.date()
     hour = today.time()
-    print(date)
-    print(hour)
 
     if request.method == "POST":
         if title and text:
@@ -147,3 +145,20 @@ def add():
         return redirect("/")
     else:
         return render_template("add.html")
+
+
+@app.route("/delete", methods=["POST"])
+@require_login
+def delete():
+    if request.method == "POST":
+        note_id = request.form.get("note_id")
+
+        con = connection()
+        cursor = con.cursor()
+
+        cursor.execute("DELETE FROM notes WHERE noteid = %s", (note_id))
+        close_con(con, cursor)
+        # Might be cool to add a warning that the note was successfully deleted
+        return redirect("/")
+    else:
+        return redirect("/")
