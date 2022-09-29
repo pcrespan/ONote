@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add note
+{% endblock %}
+
+{% block main %}
+    <p>{{ error }}</p>
+    <form action="/add", method="post">
+        <input required name="title" placeholder="Title">
+        <input required name="text" placeholder="Text">
+        <button type="submit">Add</button>
+    </form>
+{% endblock %}
