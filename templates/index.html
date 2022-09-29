@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block main %}
-    <p><a href="/edit">+</a></p>
+    <p><a href="/add">+</a></p>
     {% if user_notes %}
         {% for notes in user_notes %}
         <ul>
-            <li>notes[0]</li>
-            <li>notes[1]</li>
-            <li>notes[2]</li>
+            <li>{{ notes[0] }}</li>
+            <li>{{ notes[1] }}</li>
+            <li>{{ notes[2] }}</li>
+            <li>{{ notes[3] }}</li>
         </ul>
         {% endfor %}
     {% else %}
