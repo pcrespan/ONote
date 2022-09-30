@@ -1,0 +1,23 @@
+.navcontainer {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar {
+    overflow: hidden;
+    margin: 0;
+    list-style-type: none;
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 20px;
+    background-color: black;
+}
+
+.item, .hello {
+    float: left;
+    margin-left: 50px;
+    position: absolute;
+    color: white;
+    position: relative;
+}

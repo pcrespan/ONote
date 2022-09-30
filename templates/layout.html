@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 
 <html lang="en">
+    <link href="/static/style.css" rel="stylesheet">
     <head>
         <title> ONote: {% block title %}{% endblock %}</title>
     </head>
     <body>
         {% if session["user_id"] %}
-            <ul>
+        <div class="navcontainer">
+            <ul class="navbar">
                 <li class="item"><a href="/">Home</a></li>
                 <li class="item"><a href="/logout">Log out</a></li>
                 <li class="hello">Hello, {{ session["username"] }}</li>
             </ul>
+        </div>
         {% else %}
-            <ul>
+        <div class="navcontainer">
+            <ul class="navbar">
                 <li class="item"><a href="/login">Log In</a></li>
                 <li class="item"><a href="/register">Register</a></li>
             </ul>
+        </div>
         {% endif %}
     </body>
     <main>
