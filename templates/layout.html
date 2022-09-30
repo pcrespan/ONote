@@ -7,7 +7,7 @@
     </head>
     <body>
         {% if session["user_id"] %}
-        <div class="navcontainer">
+        <div class="nav-container">
             <ul class="navbar">
                 <li class="item"><a href="/">Home</a></li>
                 <li class="item"><a href="/logout">Log out</a></li>
@@ -15,7 +15,7 @@
             </ul>
         </div>
         {% else %}
-        <div class="navcontainer">
+        <div class="nav-container">
             <ul class="navbar">
                 <li class="item"><a href="/login">Log In</a></li>
                 <li class="item"><a href="/register">Register</a></li>

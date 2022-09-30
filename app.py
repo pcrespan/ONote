@@ -114,7 +114,8 @@ def index():
     con = connection()
     cursor = con.cursor()
 
-    cursor.execute("SELECT noteid, title, text, TO_CHAR(date, 'MM/DD/YYYY'), TO_CHAR(hour, 'HH:MM') FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
+    # Not working properly
+    cursor.execute("SELECT noteid, title, text, TO_CHAR(date, 'MM/DD/YYYY'), TO_CHAR(hour, 'HH:MI') FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
     user_notes = cursor.fetchall()
     close_con(con, cursor)
     return render_template("index.html", user_notes = user_notes)
@@ -129,6 +130,7 @@ def add():
     today = datetime.now()
     date = today.date()
     hour = today.time()
+    print(hour)
 
     if request.method == "POST":
         if title and text:

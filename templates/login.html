@@ -5,9 +5,11 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/login", method="post">
-        <input required name="username" placeholder="Username">
-        <input required name="password" placeholder="Password" type="password">
-        <button>Log In</button>
-    </form>
+    <div class="login-container">
+        <form action="/login", method="post">
+            <input class="input-field" required name="username" placeholder="Username">
+            <input class="input-field" required name="password" placeholder="Password" type="password">
+            <button class="login-button" >Log In</button>
+        </form>
+    </div>
 {% endblock %}
