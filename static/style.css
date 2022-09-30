@@ -9,15 +9,13 @@
     list-style-type: none;
     padding: 5px;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
+    color: aliceblue;
     border-radius: 20px;
     background-color: black;
 }
 
-.item, .hello {
-    float: left;
-    margin-left: 50px;
-    position: absolute;
-    color: white;
-    position: relative;
-}
+ li, .hello {
+    margin-left: 30px;
+    margin-right: 30px;
+ }
