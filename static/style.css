@@ -1,4 +1,4 @@
-.navcontainer {
+.nav-container {
     display: flex;
     justify-content: center;
 }
@@ -12,10 +12,107 @@
     display: inline-flex;
     color: aliceblue;
     border-radius: 20px;
-    background-color: black;
+    background-color: #31383F;
 }
 
  li, .hello {
     margin-left: 30px;
     margin-right: 30px;
- }
+    list-style-type: none;
+}
+
+body {
+    background-image: url('/static/onoteBackground.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.note-container {
+    /* Glassmorphism */
+    display: inline-block;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    word-break: break-word;
+    overflow: scroll;
+    width: 200px;
+    height: 180px;
+    background: rgba( 255, 255, 255, 0.2 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 5.5px );
+    -webkit-backdrop-filter: blur( 5.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.note-title {
+    font-size: larger;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.delbutton {
+    display: flex;
+    justify-content: left;
+    opacity: 0;
+    background: none;
+    transition: 0.5s;
+    border-radius: 20px;
+}
+
+.delbutton:hover {
+    opacity: 1;
+    color: red;
+}
+
+.note-text {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.login-container {
+    margin: 0 auto;
+    margin-top: 10%;
+    text-align: center;
+    background: rgba( 116, 109, 109, 0.2 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4.5px );
+    -webkit-backdrop-filter: blur( 4.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    width: 300px;
+    height: 250px;
+}
+
+.input-field {
+    display: flex;
+    margin: 40px auto;
+    background: transparent;
+    height: 30px;
+    border: 1px solid gray;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    width: 180px;
+    transition: 0.5s;
+    outline: none;
+}
+
+.input-field:focus {
+    width: 200px;
+}
+
+.login-button {
+    cursor: pointer;
+    color: white;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 30px;
+    width: 100px;
+    /* Created with https://www.css-gradient.com */
+    background: #6401A9;
+    background: -webkit-linear-gradient(bottom right, #6401A9, #40018C);
+    background: -moz-linear-gradient(bottom right, #6401A9, #40018C);
+    background: linear-gradient(to top left, #6401A9, #40018C);
+}
