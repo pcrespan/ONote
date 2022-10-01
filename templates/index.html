@@ -8,14 +8,16 @@
     <p><a href="/add">+</a></p>
     {% if user_notes %}
         {% for notes in user_notes %}
-        <div class="note-container">
-            <ul class="note">
-                <form action="/delete" method="post">
-                    <button class="delbutton" name="note_id" value={{ notes[0] }}>x</button>
-                </form>
-                <li class="note-title">{{ notes[1] }}</li>
-                <li class="note-text">{{ notes[2] }}</li>
-            </ul>
+        <div class="globe">
+            <form action="/delete" method="post">
+                <button class="delbutton" name="note_id" value={{ notes[0] }}>x</button>
+            </form>
+            <div class="note-container">
+                <ul class="note">
+                    <li class="note-title">{{ notes[1] }}</li>
+                    <li class="note-text">{{ notes[2] }}</li>
+                </ul>
+            </div>
         </div>
         {% endfor %}
     {% else %}
