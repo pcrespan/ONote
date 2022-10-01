@@ -158,7 +158,7 @@ def delete():
         con = connection()
         cursor = con.cursor()
 
-        cursor.execute("DELETE FROM notes WHERE noteid = %s", (note_id))
+        cursor.execute("DELETE FROM notes WHERE noteid = %s", (note_id, ))
         con_commit(con, cursor)
         # Might be cool to add a warning that the note was successfully deleted
         return redirect("/")
