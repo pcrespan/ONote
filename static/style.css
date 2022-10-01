@@ -32,7 +32,6 @@ body {
     display: inline-block;
     margin-left: 50px;
     margin-bottom: 50px;
-    word-break: break-word;
     overflow: scroll;
     width: 200px;
     height: 180px;
@@ -45,10 +44,16 @@ body {
 }
 
 .note-title {
+    word-break: break-word;
     font-size: larger;
-    display: flex;
+    text-align: center;
     margin-bottom: 10px;
-    justify-content: center;
+}
+
+.note-text {
+    white-space: pre;
+    text-align: left;
+    word-break: break-word;
 }
 
 .delbutton {
@@ -63,11 +68,6 @@ body {
 .delbutton:hover {
     opacity: 1;
     color: red;
-}
-
-.note-text {
-    margin-left: 50px;
-    margin-right: 50px;
 }
 
 .login-container {
@@ -110,9 +110,12 @@ body {
     border-radius: 5px;
     height: 30px;
     width: 100px;
-    /* Created with https://www.css-gradient.com */
-    background: #6401A9;
-    background: -webkit-linear-gradient(bottom right, #6401A9, #40018C);
-    background: -moz-linear-gradient(bottom right, #6401A9, #40018C);
-    background: linear-gradient(to top left, #6401A9, #40018C);
+    background-color: #31383F;
+}
+
+.warning {
+    color: white;
+    font-size: larger;
+    margin-top: 10%;
+    text-align: center;
 }
