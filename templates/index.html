@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block main %}
-    <p><a href="/add">+</a></p>
+    <form action="/add" method="get">
+        <button class="addbutton">+</button>
+    </form>
     {% if user_notes %}
         {% for notes in user_notes %}
         <div class="globe">
