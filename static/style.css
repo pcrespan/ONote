@@ -29,9 +29,6 @@ body {
 
 .note-container {
     /* Glassmorphism */
-    display: inline-block;
-    margin-left: 50px;
-    margin-bottom: 50px;
     overflow: scroll;
     width: 200px;
     height: 180px;
@@ -57,10 +54,18 @@ body {
     word-break: break-word;
 }
 
+.globe {
+    display: inline-block;
+    margin-left: 50px;
+    margin-bottom: 50px;
+}
+
 .delbutton {
-    display: flex;
-    justify-content: left;
-    opacity: 0;
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-left: 90px;
+    text-align: center;
+    opacity: 1;
     background: none;
     transition: 0.5s;
     border-radius: 20px;
