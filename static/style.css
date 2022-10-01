@@ -61,12 +61,18 @@ body {
 }
 
 .delbutton {
+    height: 40px;
+    width: 40px;
     display: inline-block;
     margin-bottom: 10px;
-    margin-left: 90px;
+    font-size: xx-large;
+    margin-left: 80px;
     text-align: center;
-    opacity: 1;
+    padding: 0;
+    opacity: 0;
+    border: none;
     background: none;
+    outline: 2px solid red;
     transition: 0.5s;
     border-radius: 20px;
 }
@@ -74,6 +80,7 @@ body {
 .delbutton:hover {
     opacity: 1;
     color: red;
+    outline: 2px solid red;
 }
 
 .login-container {
@@ -124,4 +131,24 @@ body {
     font-size: larger;
     margin-top: 10%;
     text-align: center;
+}
+
+.addbutton {
+    margin-left: 10px;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    display: inline-block;
+    outline: 2px solid white;
+    border: none;
+    background: none;
+    color: white;
+    border-radius: 40px;
+    font-size: xx-large;
+    transition: 0.5s;
+}
+
+.addbutton:hover {
+    color: greenyellow;
+    outline: 2px solid greenyellow;
 }
