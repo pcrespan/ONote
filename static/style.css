@@ -47,12 +47,13 @@ body {
     word-break: break-word;
     font-size: larger;
     text-align: center;
-    margin-bottom: 10px;
+    margin-left: auto;
+    margin-bottom: 20px;
 }
 
 .note-text {
-    white-space: pre;
-    text-align: left;
+    white-space: pre-line;
+    margin-left: auto;
     word-break: break-word;
 }
 
