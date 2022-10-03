@@ -7,7 +7,6 @@
     </head>
 
     <script>
-
         function open_modal() {
             var overlay = document.getElementById('overlay');
             var modal = document.getElementById('modal');
@@ -15,9 +14,16 @@
             overlay.classList.add('active');
         }
 
-        function close_modal() {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
+        function close_modal(e) {
+            var title = document.querySelector(".title").innerText;
+            var text = document.querySelector(".text").innerText;
+            var btn = e
+
+            if (btn.id == 'addbtn' &&  (!title || !text)) {   
+            } else {
+                modal.classList.remove('active');
+                overlay.classList.remove('active');
+            }
         }
     </script>
 
