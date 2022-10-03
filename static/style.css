@@ -153,6 +153,15 @@ body {
     outline: 2px solid greenyellow;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid #ccc;
+}
+
 #modal {
     width: 450px;
     position: fixed;
@@ -162,19 +171,11 @@ body {
     border: 1px solid #ccc;
     background-color: #fff;
     z-index: 2;
+    transition: 0.5s;
 }
 
 #modal.active {
     top: 50%;
-}
-
-.modal-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: rgba(0, 0, 0, 0.03);
-    border-bottom: 1px solid #ccc;
 }
 
 #overlay {
@@ -198,8 +199,11 @@ body {
 }
 
 #add-form {
+    height: 200px;
+    padding: 1px 1px;
+}
+
+#addbtn, #closebtn {
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 1px 1px;
 }
