@@ -6,10 +6,15 @@
 
 {% block main %}
     <button class="addbutton" onclick="open_modal()">+</button>
-    <div id="addform-container">
+    <div id="overlay"></div>
+    <div id="modal">
+        <div>
+            <div class="modal-title">Add note</div>
+            <button class="close" onclick="close_modal()">&times;</button>
+        </div>
         <form id="add-form" action="/add" method="post">
             <input required name="title" placeholder="Title">
-            <textarea required name="text" placeholder="Text" rows="15" cols="20"></textarea>
+            <textarea required name="text" placeholder="Text" rows="5" cols="20"></textarea>
             <button type="submit" onclick="close_modal()">Add</button>
             <button onclick="close_modal()">Cancel</button>
         </form>
@@ -18,7 +23,7 @@
         {% for notes in user_notes %}
         <div class="globe">
             <form action="/delete" method="post">
-                <button class="delbutton" name="note_id" value={{ notes[0] }}>x</button>
+                <button class="delbutton" name="note_id" value={{ notes[0] }}>&times;</button>
             </form>
             <div class="note-container">
                 <ul class="note">

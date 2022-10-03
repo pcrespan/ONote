@@ -9,13 +9,15 @@
     <script>
 
         function open_modal() {
-            document.getElementById('addform-container').style.display='block';
-            document.getElementById('overlay').classList.add('active');
+            var overlay = document.getElementById('overlay');
+            var modal = document.getElementById('modal');
+            modal.classList.add('active');
+            overlay.classList.add('active');
         }
 
         function close_modal() {
-            document.getElementById('addform-container').style.display='none';
-            document.getElementById('overlay').classList.remove('active');
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
         }
     </script>
 
