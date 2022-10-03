@@ -8,16 +8,16 @@
     <button class="addbutton" onclick="open_modal()">+</button>
     <div id="overlay"></div>
     <div id="modal">
-        <div>
+        <div class="header">
             <div class="modal-title">Add note</div>
-            <button class="close" onclick="close_modal()">&times;</button>
+            <button class="close" onclick="close_modal(this)">&times;</button>
         </div>
         <form id="add-form" action="/add" method="post">
-            <input required name="title" placeholder="Title">
-            <textarea required name="text" placeholder="Text" rows="5" cols="20"></textarea>
-            <button type="submit" onclick="close_modal()">Add</button>
-            <button onclick="close_modal()">Cancel</button>
+            <input required name="title" class="title" placeholder="Title">
+            <textarea required name="text" class="text" placeholder="Text" rows="5" cols="20"></textarea>
+            <button type="submit" id="addbtn" onclick="close_modal(this)">Add</button>
         </form>
+        <button id="closebtn" onclick="close_modal(this)">Cancel</button>
     </div>
     {% if user_notes %}
         {% for notes in user_notes %}
