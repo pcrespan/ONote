@@ -130,14 +130,12 @@ def add():
     today = datetime.now()
     date = today.date()
     hour = today.time()
-    print(hour)
 
     if request.method == "POST":
         if title and text:
             pass
         else:
-            error = 'Fill every field before adding a note'
-            return render_template("add.html", error = error)
+            return redirect("/")
         
         con = connection()
         cursor = con.cursor()
