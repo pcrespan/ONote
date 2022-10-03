@@ -121,7 +121,7 @@ def index():
     return render_template("index.html", user_notes = user_notes)
 
 
-@app.route("/add", methods = ["GET", "POST"])
+@app.route("/add", methods = ["POST"])
 @require_login
 def add():
 
@@ -146,7 +146,7 @@ def add():
         con_commit(con, cursor)
         return redirect("/")
     else:
-        return render_template("add.html")
+        pass
 
 
 @app.route("/delete", methods=["POST"])
