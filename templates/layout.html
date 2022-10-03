@@ -5,6 +5,20 @@
     <head>
         <title> ONote: {% block title %}{% endblock %}</title>
     </head>
+
+    <script>
+
+        function open_modal() {
+            document.getElementById('addform-container').style.display='block';
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function close_modal() {
+            document.getElementById('addform-container').style.display='none';
+            document.getElementById('overlay').classList.remove('active');
+        }
+    </script>
+
     <body>
         {% if session["user_id"] %}
         <div class="nav-container">
