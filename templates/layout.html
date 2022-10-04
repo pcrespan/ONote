@@ -7,6 +7,7 @@
     </head>
 
     <script>
+        // Creates or removes class lists to show or hide modal
         function open_modal() {
             var overlay = document.getElementById('overlay');
             var modal = document.getElementById('modal');
@@ -14,11 +15,13 @@
             overlay.classList.add('active');
         }
 
+        // Receives event (button pressed)
         function close_modal(e) {
             var title = document.querySelector(".title").innerText;
             var text = document.querySelector(".text").innerText;
             var btn = e
 
+            // Check which button was pressed and if input fields are empty
             if (btn.id == 'addbtn' &&  (!title || !text)) {   
             } else {
                 modal.classList.remove('active');

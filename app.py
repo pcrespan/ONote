@@ -29,7 +29,7 @@ def close_con(connection, cursor):
     cursor.close()
     connection.close()
 
-
+# Commit changes to database
 def con_commit(connection, cursor):
     connection.commit()
     cursor.close()
@@ -45,7 +45,7 @@ def require_login(f):
         return redirect("/login")
     return logged
 
-
+# Register function
 @app.route("/register", methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -56,19 +56,22 @@ def register():
         password = request.form.get("password")
         confirmPass = request.form.get("confirmPass")
 
+        # Checks if input fields are not empty
         if username and password and confirmPass:
             pass
         else:
             close_con(con, cursor)
             return render_template("register.html");
 
+        # Checking if username already exists
         cursor.execute("SELECT * FROM users WHERE username = %s;", (username, ))
         user_exists = cursor.fetchall()
-        error = 'Username already in use'
+        error = 'Username already in use or passwords do not match'
         if user_exists or password != confirmPass:
             close_con(con, cursor)
             return render_template("register.html", error = error)
         else:
+            # Hashing password and inserting on database
             hashPassword = generate_password_hash(password)
             cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (username, hashPassword))
             con_commit(con, cursor)
@@ -76,22 +79,23 @@ def register():
     else:
         return render_template("register.html")
 
-
+# Login function
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Check if username and password match database
         con = connection()
         cursor = con.cursor()
 
         username = request.form.get("username")
         password = request.form.get("password")
 
+        # Checks if input fields are not empty
         if username and password:
             pass
         else:
             redirect("/login")
 
+        # Check if username and password match database
         cursor.execute("SELECT * FROM users WHERE username = %s;", (username, ))
         user_data = cursor.fetchall()
         if user_data and check_password_hash(user_data[0][2], password):
@@ -107,6 +111,7 @@ def login():
         return render_template("login.html")
 
 
+# Logout function, clears session
 @app.route("/logout")
 @require_login
 def logout():
@@ -114,19 +119,22 @@ def logout():
     return redirect("/login")
 
 
+# Index page
 @app.route("/")
 @require_login
 def index():
     con = connection()
     cursor = con.cursor()
 
-    # Not working properly
+    # Gathering information from database
     cursor.execute("SELECT noteid, title, text, TO_CHAR(date, 'MM/DD/YYYY'), TO_CHAR(hour, 'HH:MI') FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
     user_notes = cursor.fetchall()
     close_con(con, cursor)
+    # Rendering template with all information
     return render_template("index.html", user_notes = user_notes)
 
 
+# Add notes function
 @app.route("/add", methods = ["POST"])
 @require_login
 def add():
@@ -138,6 +146,7 @@ def add():
     hour = today.time()
 
     if request.method == "POST":
+        # Checking if input fields are not empty
         if title and text:
             pass
         else:
@@ -146,6 +155,7 @@ def add():
         con = connection()
         cursor = con.cursor()
 
+        # Inserting note on database
         cursor.execute("INSERT INTO notes (uid, title, text, date, hour) VALUES (%s, %s, %s, %s, %s);", (session["user_id"], title, text, date, hour))
         con_commit(con, cursor)
         return redirect("/")
@@ -153,6 +163,7 @@ def add():
         pass
 
 
+# Delete function
 @app.route("/delete", methods=["POST"])
 @require_login
 def delete():
@@ -162,9 +173,10 @@ def delete():
         con = connection()
         cursor = con.cursor()
 
+        # Deleting row containing note from database
         cursor.execute("DELETE FROM notes WHERE noteid = %s", (note_id, ))
         con_commit(con, cursor)
-        # Might be cool to add a warning that the note was successfully deleted
+        
         return redirect("/")
     else:
         return redirect("/")
