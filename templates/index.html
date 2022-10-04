@@ -15,9 +15,11 @@
         <form id="add-form" action="/add" method="post">
             <input required name="title" class="title" placeholder="Title">
             <textarea required name="text" class="text" placeholder="Text" rows="5" cols="20"></textarea>
-            <button type="submit" id="addbtn" onclick="close_modal(this)">Add</button>
+            <div class="btns">
+                <button type="submit" id="addbtn" onclick="close_modal(this)">Add</button>
+                <input value="Cancel" type="button" id="closebtn" onclick="close_modal(this)">
+            </div>
         </form>
-        <button id="closebtn" onclick="close_modal(this)">Cancel</button>
     </div>
     {% if user_notes %}
         {% for notes in user_notes %}

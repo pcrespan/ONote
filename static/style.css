@@ -193,7 +193,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1rem;
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: bisque;
     border-bottom: 1px solid #ccc;
 }
 
@@ -220,7 +220,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ccc;
+    background-color: lightgray;
 }
 
 #overlay.active {
@@ -234,10 +234,9 @@ body {
 }
 
 #add-form {
-    height: 200px;
+    height: 250px;
     padding: 1px 1px;
     text-align: center;
-    
 }
 
 .title, .text {
@@ -248,11 +247,32 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    transition: 0.5s;
+    outline: #31383F;
+}
+
+.title:focus, .text:focus {
+    width: 85%;
+}
+
+.btns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    cursor: pointer;
+    outline: none;
 }
 
 #addbtn, #closebtn {
-    display: flex;
-    justify-content: center;
+    color: white;
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 30px;
+    width: 100px;
+    background-color: #31383F;
+    border-radius: 5px;
+    border: 1px solid black;
 }
 
 .text {
