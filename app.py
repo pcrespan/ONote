@@ -55,7 +55,13 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirmPass = request.form.get("confirmPass")
-        
+
+        if username and password and confirmPass:
+            pass
+        else:
+            close_con(con, cursor)
+            return render_template("register.html");
+
         cursor.execute("SELECT * FROM users WHERE username = %s;", (username, ))
         user_exists = cursor.fetchall()
         error = 'Username already in use'
