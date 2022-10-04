@@ -6,10 +6,12 @@
 
 {% block main %}
     <p>{{ error }}</p>
-    <form action="/register" method="post">
-        <input required name="username" placeholder="Username">  
-        <input required name="password" placeholder="Password">
-        <input required name="confirmPass" placeholder="Confirm password">
-        <button>Register</button>
-    </form>
+    <div class="reg-container">
+        <form action="/register" method="post">
+            <input class="input-field" required name="username" placeholder="Username">  
+            <input class="input-field" required name="password" placeholder="Password">
+            <input class="input-field" required name="confirmPass" placeholder="Confirm password">
+            <button class="reg-btn" >Register</button>
+        </form>
+    </div>
 {% endblock %}
