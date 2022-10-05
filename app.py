@@ -127,7 +127,7 @@ def index():
     cursor = con.cursor()
 
     # Gathering information from database
-    cursor.execute("SELECT noteid, title, text, TO_CHAR(date, 'MM/DD/YYYY'), TO_CHAR(hour, 'HH:MI') FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
+    cursor.execute("SELECT noteid, title, text FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
     user_notes = cursor.fetchall()
     close_con(con, cursor)
     # Rendering template with all information
