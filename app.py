@@ -15,14 +15,10 @@ Session(app)
 
 
 class Connection:
-    
-    def __init__(self, conn, cursor):
-        self.connection = conn
-        self.cursor = cursor
 
     # Creates an instance of Connection class
-    @classmethod
-    def get_con(cls):
+    @staticmethod
+    def get_con():
         conn = psycopg2.connect(
         host = 'localhost',
         database = 'onote',
@@ -31,17 +27,19 @@ class Connection:
         )
 
         cursor = conn.cursor()
-        return cls(conn, cursor)
+        return conn, cursor
     
     # Close connection
-    def close_all(self):
-        self.cursor.close()
-        self.connection.close()
+    @staticmethod
+    def close_all(cursor, conn):
+        cursor.close()
+        conn.close()
 
     # Commiting changes and closing connection
-    def commit_all(self):
-        self.connection.commit()
-        self.close_all()
+    @staticmethod
+    def commit_all(cursor, conn):
+        conn.commit()
+        Connection.close_all(cursor, conn)
 
 
 # Checks if user is logged in
@@ -57,8 +55,7 @@ def require_login(f):
 @app.route("/register", methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
-        con = Connection.get_con()
-        cursor = con.cursor
+        con,cursor = Connection.get_con()
 
         username = request.form.get("username")
         password = request.form.get("password")
@@ -68,7 +65,7 @@ def register():
         if username and password and confirmPass:
             pass
         else:
-            con.close_all()
+            Connection.close_all(cursor, con)
             return render_template("register.html");
 
         # Checking if username already exists
@@ -77,13 +74,13 @@ def register():
         error = 'Username already in use or passwords do not match'
 
         if user_exists or password != confirmPass:
-            con.close_all()
+            Connection.close_all(cursor, con)
             return render_template("register.html", error = error)
         else:
             # Hashing password and inserting on database
             hashPassword = generate_password_hash(password)
             cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (username, hashPassword))
-            con.commit_all()
+            Connection.commit_all(cursor, con)
             return redirect("/login")
     else:
         return render_template("register.html")
@@ -92,8 +89,7 @@ def register():
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
-        con = Connection.get_con()
-        cursor = con.cursor
+        con,cursor = Connection.get_con()
 
         username = request.form.get("username")
         password = request.form.get("password")
@@ -110,11 +106,11 @@ def login():
         if user_data and check_password_hash(user_data[0][2], password):
             session["user_id"] = user_data[0][0]
             session["username"] = user_data[0][1]
-            con.close_all()
+            Connection.close_all(cursor, con)
             return redirect("/")
         else:
             error = 'Wrong username or password'
-            con.close_all()
+            Connection.close_all(cursor, con)
             return render_template("login.html", error = error)
     else:
         return render_template("login.html")
@@ -132,13 +128,12 @@ def logout():
 @app.route("/")
 @require_login
 def index():
-    con = Connection.get_con()
-    cursor = con.cursor
+    con,cursor = Connection.get_con()
 
     # Gathering information from database
     cursor.execute("SELECT noteid, title, text FROM notes WHERE uid = %s ORDER BY date;", (session["user_id"], ))
     user_notes = cursor.fetchall()
-    con.close_all()
+    Connection.close_all(cursor, con)
     # Rendering template with all information
     return render_template("index.html", user_notes = user_notes)
 
@@ -161,12 +156,11 @@ def add():
         else:
             return redirect("/")
         
-        con = Connection.get_con()
-        cursor = con.cursor
+        con,cursor = Connection.get_con()
 
         # Inserting note on database
         cursor.execute("INSERT INTO notes (uid, title, text, date, hour) VALUES (%s, %s, %s, %s, %s);", (session["user_id"], title, text, date, hour))
-        con.commit_all()
+        Connection.commit_all(cursor, con)
         return redirect("/")
     else:
         pass
@@ -179,12 +173,11 @@ def delete():
     if request.method == "POST":
         note_id = request.form.get("note_id")
 
-        con = Connection.get_con()
-        cursor = con.cursor
+        con,cursor = Connection.get_con()
 
         # Deleting row containing note from database
         cursor.execute("DELETE FROM notes WHERE noteid = %s", (note_id, ))
-        con.commit_all()
+        Connection.commit_all(cursor, con)
         
         return redirect("/")
     else:
